@@ -2,11 +2,11 @@
 
 ## 公开数据与原文复核指南
 
-这次讲座用公开证据完成比亚迪（002594.SZ）的业绩更新。课堂先建立 2026Q1 对 2025Q1 的一季度基线，再分析 2026H1 对 2025H1 的六个月累计数；Q3（前三季度）和 FY（全年）沿用同一规则。关键数字能追溯到同花顺原始返回和巨潮公司原文，计算能够复算，来源冲突会触发当前步骤的记录。每次手动或定时运行后，项目还会自动更新一个本地结果页。
+这是一份真实数据进阶指南。主线先在 `byd_earnings` 中用本地教学输入完成“产品 → 做法 → 评测 → 生成—评测—修复”的最小闭环；完成后再按本文件接入比亚迪（002594.SZ）公开证据。真实扩展沿用 2026Q1 对 2025Q1 的基线、2026H1 对 2025H1 的六个月累计比较，Q3 和 FY 继续按同一报告期比较。
 
-第一步是取得并解压课堂提供的 `byd_earnings.zip`，再用自己的 AI 工具打开其中的 `byd_earnings` 文件夹。压缩包只含 `output/byd_earnings_template.pptx` 这一份可编辑模板。之后在对话界面逐条输入讲义中的提示词，每完成一步都先检查结果。
+主线第一步仍确认并打开 `byd_earnings` 和可编辑 PPT 模板；压缩包只含模板。主线提示词不需要网络或个人凭据。真实数据、PDF、原始 JSON、候选 PPT、workflow 和结果页属于进阶扩展，按本文件逐项建立并检查。
 
-本文件是数据与安全参考。课堂实际顺序以主讲义为准：先由 Agent 取得巨潮全文和摘要并检查身份，再取得同花顺原始数据；前一项完成并检查后才进入下一项。
+本文件只讲真实数据和安全边界。主讲义中的五个评测先规定什么时候应停下；进入这里以后，证据取得 Agent 先找巨潮全文和摘要并检查身份，再取得同花顺原始数据。每一步完成后查看产物，再继续。
 
 本课使用两类证据：
 
@@ -136,7 +136,7 @@ hithink-finance auth status --format json
 
 若认证缺失，回到上一节，不要把 Key 写进命令。
 
-## 参考 A：取得同花顺原始数据（课堂第 4 步）
+## 参考 A：进阶取得同花顺原始数据
 
 在 `byd_earnings/` 目录运行：
 
@@ -154,7 +154,7 @@ hithink-finance financials indicators --thscode 002594.SZ --report 2026-2 --outp
 
 报告期更新按 Q1→H1→Q3→FY 进行：Q1 是一季度，H1 是截至 6 月 30 日的六个月累计，Q3 是截至 9 月 30 日的前三季度累计，FY 是全年。每次与上一年同一报告期比较。`2026Q2` 在本案例的半年报利润表中表示截至 6 月 30 日的六个月累计数；不把 H1 减 Q1 当作 4—6 月单季数。
 
-## 参考 B：让 Agent 取得巨潮全文和摘要（课堂第 3 步）
+## 参考 B：进阶让 Agent 取得巨潮全文和摘要
 
 在打开 `byd_earnings` 的 AI 对话界面中，把公司、报告期和两个本地目标位置交给 Agent：
 
@@ -206,7 +206,7 @@ cninfo_full_p0067.png
 
 ## 九、Kimi 套餐与本课 API 的区别
 
-截至 2026 年 9 月 13 日，[Kimi 官方会员说明](https://www.kimi.com/help/membership/membership-overview)把同花顺等专业数据库列为各档会员的探索性功能；[Kimi Code 官方插件说明](https://www.kimi.com/code/docs/kimi-code-cli/customization/plugins)说明 Datasource 查询会消耗 Kimi Code 套餐额度。
+截至 2026 年 10 月 11 日，[Kimi 官方会员说明](https://www.kimi.com/help/membership/membership-overview)把同花顺等专业数据库列为各档会员的探索性功能；[Kimi Code 官方插件说明](https://www.kimi.com/code/docs/kimi-code-cli/customization/plugins)说明 Datasource 查询会消耗 Kimi Code 套餐额度。
 
 Kimi 会员额度用于 Kimi 产品内的数据源查询。本练习中的 `hithink-finance` 命令和 `automation/` 使用本人在同花顺金融数据平台注册的 Hithink Finance API Key；Kimi 可以负责操作文件或整理文字。
 
