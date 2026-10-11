@@ -1,31 +1,6 @@
-# 从Chat到Agent：金融智能体搭建入门
+# 从 Chat 到 Agent：提示词附录
 
-## 先看产品，再看怎么证明它可靠
-
-这次讲座先做一个小而完整的产品：把一组报告期数字整理成一页可核验的业绩简报。课堂用“产品 → 做法 → 评测”的顺序，让第一次接触 Agent 的人先看见交付物，再理解为什么需要 workflow 和生成—评测—修复。
-
-主线五步只使用本地教学输入，完成一页候选简报和五个评测；完成后可选择进阶扩展，把同一接口接到真实 Hithink/CNINFO 数据、候选 PPT、四 Agent workflow 和自动化结果页。
-
-## 本次讲座的目标
-
-- 能把一个金融分析产品说清楚：使用者、输入、输出、完成标准和停止条件。
-- 能用五个小评测检查数字、累计口径、单位、来源冲突和能力边界。
-- 能比较一次 Chat、固定 workflow、生成—评测—修复三种做法，并跑通一个最小闭环。
-- 知道怎样把同一套接口扩展到真实数据、候选 PPT、四 Agent workflow 和自动化结果页。
-
-## 三种做法
-
-- **一次 Chat**：先生成一版，速度快，检查点少；它是基线。
-- **固定 workflow**：把生成、检查和交付拆成固定顺序，每一步有明确产物。
-- **生成—评测—修复**：让答案先接受五个小测验，再按失败项修复，留下可读的评测记录。
-
-## 五个评测
-
-- **数字控制**：输入 两份来源一致，收入 1000 对 800；通过条件 同比公式正确且保留两位小数
-- **累计口径**：输入 H1 与 Q1 同时出现；通过条件 说明 H1 是六个月累计，不生成未经来源支持的单季 Q2
-- **单位换算**：输入 万元与亿元混用；通过条件 写出换算因子并统一单位
-- **来源冲突**：输入 两份来源给出不同数值；通过条件 标记 conflict，停下并保留待复核
-- **能力边界**：输入 没有共识或公告原文；通过条件 不写 beat/miss、surprise 或确定性原因
+这份文件是可选的动手材料。先阅读 `金融教师AI-Agent实操讲义.html`，理解每一步要解决的问题，再决定是否把下面的提示词交给自己的工具。
 
 ## 主线五步
 
@@ -46,7 +21,7 @@
 同时建立 data/evals/README.md，写明本线使用的教学输入是虚构演示材料，不代表比亚迪或任何真实公司。完成写入测试后停止，不要建立真实数据目录。
 ```
 
-完成后检查：byd_earnings/output/byd_earnings_template.pptx 仍可编辑；data/evals/product_spec.md 已写清使用者、任务、输入、输出、完成标准，并标明教学输入只用于演示；工作区可以继续写入。
+自我检查：byd_earnings/output/byd_earnings_template.pptx 仍可编辑；data/evals/product_spec.md 已写清使用者、任务、输入、输出、完成标准，并标明教学输入只用于演示；工作区可以继续写入。
 
 ### 2. 跑一次 Chat 基线：先看它会怎样失败
 
@@ -60,7 +35,7 @@
 然后只用这一份文件生成 output/brief_baseline.md。写出一页简报：标题、报告期、四项指标的本期/上年同期/同比、计算过程、来源和仍需核实的事项。文首写“教学草稿—未评测”，并注明这些数字不代表比亚迪或任何真实公司。不要添加市场反应、估值、评级、目标价或投资建议。完成后停止。
 ```
 
-完成后检查：data/evals/teaching_input.json 和 output/brief_baseline.md 已生成；简报含本期、上年同期、同比和“教学草稿—未评测”标记；没有联网请求或真实公司结论。
+自我检查：data/evals/teaching_input.json 和 output/brief_baseline.md 已生成；简报含本期、上年同期、同比和“教学草稿—未评测”标记；没有联网请求或真实公司结论。
 
 ### 3. 用五个小测验找出失败点
 
@@ -79,7 +54,7 @@
 先对 brief_baseline.md 做评测，再用简短的人工构造答案覆盖其余容易遗漏的情况。不要为了让结果全绿而修改输入或隐藏失败。完成后停止。
 ```
 
-完成后检查：data/evals/cases.json、expected.md 和 eval_report.md 已生成；五个案例各有输入、通过条件、观察结果和 pass/fail；报告保留未通过项及修复建议，并继续标注教学数据。
+自我检查：data/evals/cases.json、expected.md 和 eval_report.md 已生成；五个案例各有输入、通过条件、观察结果和 pass/fail；报告保留未通过项及修复建议，并继续标注教学数据。
 
 ### 4. 比较三种做法：Chat、固定 workflow、生成—评测—修复
 
@@ -98,7 +73,7 @@
 实际运行一次：以 brief_baseline.md 为起点，生成 output/brief_candidate.md，评测后生成 output/brief_repaired.md。修复只能使用教学输入和评测报告；保留失败记录，不把示例数字改成真实事实。完成后停止。
 ```
 
-完成后检查：workflow/minimal/README.md 已列出三种做法的输入、步骤、产物和停止条件；generate.md、evaluate.md、repair.md 与一次 run_log.md 已生成；修复后的简报仍保留评测报告和人工复核状态。
+自我检查：workflow/minimal/README.md 已列出三种做法的输入、步骤、产物和停止条件；generate.md、evaluate.md、repair.md 与一次 run_log.md 已生成；修复后的简报仍保留评测报告和人工复核状态。
 
 ### 5. 交付一页可核验简报
 
@@ -112,11 +87,11 @@
 把披露事实、计算结果、可能解释、未知项分开；没有公告原文、分析师共识或真实数据时，不写 beat/miss、earnings surprise、投资建议或确定性原因。保留 brief_baseline.md、brief_repaired.md 和 eval_report.md，不覆盖它们。完成后停止。
 ```
 
-完成后检查：output/finance_brief_candidate.md 已生成；其中有一张可复算表、五个评测结果、来源/假设/未知项、下一步和“候选—需要人工复核”；output/brief_review_checklist.md 列出逐项检查。
+自我检查：output/finance_brief_candidate.md 已生成；其中有一张可复算表、五个评测结果、来源/假设/未知项、下一步和“候选—需要人工复核”；output/brief_review_checklist.md 列出逐项检查。
 
 ## 进阶四步
 
-主线完成后按剩余时间选择。
+真实权限、报告原文和自动化属于选做内容。
 
 ### 进阶 1. 进阶：接入真实 Hithink 与巨潮数据
 
@@ -128,7 +103,7 @@
 请在当前 byd_earnings 中完成一次真实数据取证：为比亚迪（002594.SZ）查找 2026 年半年度报告全文和摘要，分别保存到 data/case/raw/cninfo/002594_BYD_2026_H1_report_full.pdf 和 data/case/raw/cninfo/002594_BYD_2026_H1_report_summary.pdf，并核对公司、证券代码、报告期和文件身份。使用已配置的 Hithink Finance 权限取得 2026H1 与 2025H1 的利润表和财务指标，完整原始返回保存为 data/case/raw/hithink/income.json 和 data/case/raw/hithink/indicators.json。确认 H1 是截至 6 月 30 日的六个月累计数。缺少权限、文件或期间不清时停止并写清原因。不要展示或猜测 PDF 直链。完成后停止。
 ```
 
-完成后检查：个人 Key 仍在项目外；两份 CNINFO PDF 和两份 Hithink JSON 均保存到规定路径，并确认公司、证券代码、报告期和累计口径。
+自我检查：个人 Key 仍在项目外；两份 CNINFO PDF 和两份 Hithink JSON 均保存到规定路径，并确认公司、证券代码、报告期和累计口径。
 
 ### 进阶 2. 进阶：从核对表生成候选 PPT
 
@@ -140,7 +115,7 @@
 请先建立独立验证器 `workflow/verify_run.py` 和收据规则，再进行本次原文复核。固定检查营业收入、营业成本、营业利润、归母净利润、基本每股收益。每项记录同花顺原始数值和单位、巨潮原始数值和单位、统一口径后的比较值、PDF 文件名、页码和对应整页截图，保存到 `data/case/prepared/source_checks.csv`。先根据已经完成的计算和五项核对写出待人工复核的简报 `output/比亚迪2026年半年报收入与利润简报.md`，把披露事实、计算结果、可能解释和仍需核实分开，并保留“草稿——需要人工复核”标记。再用与 workflow 相同的运行记录格式，把本次使用的两份 JSON、两份 PDF、计算表、核对表、四张截图、汇总表和简报冻结到 `workflow/runs/<本次运行目录>/`，记录文件哈希、报告期和运行身份。运行 `python3 workflow/verify_run.py --run <本次运行目录>`，让它重新检查冻结文件、计算值、五项核对、单位、页码、截图绑定和简报输出，并生成 `workflow/runs/<本次运行目录>/verification_receipt.json`。验证器返回 `BLOCK` 时，保留收据和已有证据，先按失败检查修复，不生成候选 PPT。只有五项全部通过且收据为 `status: "verified"` 时，才按 PPT 模板生成 `output/byd_earnings_candidate.pptx`，固定 5 页为：1）封面与报告期；2）收入与利润概览；3）增长与盈利能力；4）本期主要变化；5）数据来源与核对。第 4 页只写有数字或公告原文支持的观察，第 5 页列出两份同花顺原始数据、巨潮摘要、巨潮全文和人工确认状态，并在 PPT 中标明“候选—需要人工复核”。发现差异、缺页或单位不一致时，保存已有证据，停在当前指标，不生成或覆盖已批准 PPT。已批准文件使用 `output/byd_earnings_approved.pptx`；候选稿逐页查看后，请先向我说明需要确认的数字、来源、图表和文字，只有我明确确认后才运行项目中提供的批准操作，并记录确认人和时间。
 ```
 
-完成后检查：source_checks.csv 恰有五项指标；验证收据为 verified 才生成 output/byd_earnings_candidate.pptx；候选稿带人工复核标记，已批准稿不被覆盖。
+自我检查：source_checks.csv 恰有五项指标；验证收据为 verified 才生成 output/byd_earnings_candidate.pptx；候选稿带人工复核标记，已批准稿不被覆盖。
 
 ### 进阶 3. 进阶：把主线固化为四 Agent workflow
 
@@ -150,7 +125,7 @@
 请把前面已经建立并通过验证的收入与利润分析做成一套以后可以重复使用的工作流程（Agent workflow），并在 byd_earnings 中实际建立和运行。复用已有的独立验证器 `workflow/verify_run.py` 和 `verification_receipt.json` 收据规则，不要在本阶段另写一套数字判断。安排四个 Agent：证据取得 Agent 取得同花顺数据和巨潮公告；计算 Agent 计算指标；原文复核 Agent 逐项核对并保存截图；简报 Agent 只根据已通过的证据整理待人工复核文字。再建立一个共同遵守的 Skill，把公司、报告期、单位、公式、来源和停止规则写清楚；再建立一个固定的 PPT 更新阶段，只有验证器对本次冻结运行目录返回 `status: "verified"` 后，才读取计算表和核对表，按 5 页结构（封面与报告期、收入与利润概览、增长与盈利能力、本期主要变化、数据来源与核对）生成 `output/byd_earnings_candidate.pptx`、页面更新计划和变更记录。把 2026Q1 对 2025Q1 作为基线，把本次 2026H1 对 2025H1 作为第一次更新；以后 Q3 和 FY 都与上一年同一报告期比较，不把 H1 减 Q1 当作单季。每开始一个阶段先记录，完成后标记已完成；出现问题就停在当前阶段，写清原因、已保存材料和下一步，后续保持尚未开始。每次运行单独保存 JSON、PDF、截图、五项核对表、核验收据和候选 PPT。数字、公式、核对结果、独立验证和停止条件由固定程序决定。已批准 PPT 只能由本人确认后更新。完成后运行一次并列出状态和仍需人工复核事项。
 ```
 
-完成后检查：workflow/run_agents.py --project . 可以展示计划并做本地预检；每个角色载入同一 Skill；失败时后续阶段保持尚未开始，候选 PPT 与已批准 PPT 分开。
+自我检查：workflow/run_agents.py --project . 可以展示计划并做本地预检；每个角色载入同一 Skill；失败时后续阶段保持尚未开始，候选 PPT 与已批准 PPT 分开。
 
 ### 进阶 4. 进阶：接上查新、自动化与结果页
 
@@ -170,26 +145,14 @@
 页面再显示“上一次成功结果”，失败时保留上一次已批准 PPT 和收入利润结果。verification_receipt.json 的 status 为 verified，五项核对全部通过且截图可打开时，显示“巨潮原文复核通过（5/5）”。页面隐藏 API Key 和内部日志。完成后试跑一次并检查电脑和手机宽度下都能阅读。
 ```
 
-完成后检查：automation/ 中有可独立运行的查新程序；新事件能写入阶段记录、证据、核验收据、候选 PPT 和 automation/runtime/result.html；失败时后续步骤尚未开始且已批准 PPT 未被覆盖。
+自我检查：automation/ 中有可独立运行的查新程序；新事件能写入阶段记录、证据、核验收据、候选 PPT 和 automation/runtime/result.html；失败时后续步骤尚未开始且已批准 PPT 未被覆盖。
 
-## 遇到问题时
-
-### 当前步骤卡住时
+## 卡住时可以问
 
 ```text
 当前步骤遇到问题。请先读取最近一次产物和运行记录，只定位一个具体阻塞点；保留已经完成的文件，不重做已通过的步骤。说明：停在哪一步、已保存什么、缺什么、修复后从哪一步继续。不要联网，除非当前步骤明确属于真实数据进阶。
 ```
 
-### 简报格式需要调整时
+## 资料边界
 
-```text
-请只调整 output/finance_brief_candidate.md 的版式，不改变任何数字、单位、期间、来源、评测结果或未知项；保留“候选—需要人工复核”状态，并在完成后列出改动。
-```
-
-## 工具说明
-
-可使用 Codex、Claude Code、Cursor、Kimi Code、ZCode、WorkBuddy、Qoder CN 或 TraeCode。没有可用工具时，现场安装 OpenCode Desktop，用 `/connect` 连接自己的 DeepSeek API。主线不需要联网；真实数据扩展使用本人注册的 Hithink Finance API Key。
-
-## 方法来源
-
-本课把产品、做法、评测和 Generate—Evaluate—Repair 放在主线，再接入中国 A 股报告期更新、同花顺结构化数据、巨潮原文复核、四 Agent workflow、独立自动化和本地结果页。
+主线不需要联网；真实数据扩展使用本人注册的 Hithink Finance API Key。密钥不写入提示词、日志、截图或项目目录。没有公告原文或分析师共识时，不写确定性原因、beat/miss 或 earnings surprise。
