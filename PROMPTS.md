@@ -4,94 +4,95 @@
 
 ## 主线五步
 
-### 1. 先看产品：业绩简报更新器
+### 1. 先看 Product：把一页业绩简报说清楚
 
-先把要交付的东西说清楚：一页教学用业绩简报，让读者看见收入、利润、同比、证据和未知项，并能回到原始材料复查。
+讲义从现场演示的 Product 卡开始。先认出使用者、输入、输出和完成标准，再把这张卡交给 OpenCode；你不需要先懂 Agent 术语。
 
 ```text
-我已解压并打开名为 byd_earnings 的文件夹。请先确认当前文件夹名称，并确认 output/byd_earnings_template.pptx 存在且可编辑；保留这个模板，不要删除或替换。
+我已经在 OpenCode 中打开名为 byd_earnings 的文件夹。请先确认当前文件夹名称，并确认 output/byd_earnings_template.pptx 存在且可编辑；保留这个模板，不要删除或替换。
 
-现在只做产品定义，不联网、不注册账号、不读取真实财务数据。在 data/evals/ 建立 product_spec.md，写清：
+现在只定义 Product，不联网、不注册账号、不读取真实财务数据。在 data/evals/ 建立 product_spec.md 和 README.md。product_spec.md 用普通中文写清：
 1. 使用者：需要快速阅读一家公司业绩变化的金融教师；
-2. 任务：把一小组报告期数字整理成一页可核验的业绩简报；
+2. 任务：把一组报告期数字整理成一页可核验的业绩简报；
 3. 输入：本期、上年同期、单位、指标、来源和不确定项；
-4. 输出：一页简报、变化率、来源说明、未知项和“需要人工复核”状态；
-5. 完成标准：数字可复算，单位一致，来源可回查，证据不足时明确停下，不编造原因或共识比较。
+4. 输出：一页简报、变化率、来源说明、未知项和通过 / 错 / 待测状态；
+5. 完成标准：数字可复算，单位一致，来源可回查，证据不足时停止，不编造原因或共识比较。
 
-同时建立 data/evals/README.md，写明本线使用的教学输入是虚构演示材料，不代表比亚迪或任何真实公司。完成写入测试后停止，不要建立真实数据目录。
+README.md 写明主线是用 OpenCode + 已连接的大模型复刻这个 Product，教学输入不代表比亚迪或任何真实公司。完成一次写入测试后停止，不要建立真实数据目录。
 ```
 
-自我检查：byd_earnings/output/byd_earnings_template.pptx 仍可编辑；data/evals/product_spec.md 已写清使用者、任务、输入、输出、完成标准，并标明教学输入只用于演示；工作区可以继续写入。
+自我检查：在 byd_earnings/data/evals/product_spec.md 写清使用者、任务、输入、输出、完成标准和停止条件；README.md 标明主线只使用教学输入，模板仍可编辑。
 
-### 2. 跑一次 Chat 基线：先看它会怎样失败
+### 2. 用 OpenCode + 大模型做出第一版
 
-先用一次普通 Chat 生成第一版简报。这个基线故意只解决“写出来”，把数字、单位和证据检查留到下一步，便于看见方法升级的必要性。
+把 Product 卡交给 OpenCode，让它在工作文件夹里完成第一版。先用一个能力足够的通用大模型读同一份教学输入，只追求完整产物，不急着追求完美。
 
 ```text
-请在当前 byd_earnings 文件夹内完成一次本地 Chat 基线，不联网、不使用真实财务数据。
+请在 OpenCode 当前打开的 byd_earnings 文件夹内，用已经连接的通用大模型完成一次 Product 基线。先读取 data/evals/product_spec.md 和 README.md。
 
-先建立 data/evals/teaching_input.json，写入以下明确标注的教学输入：公司标签“教学用示例（非真实财务数据）”；本期“2026H1”；上年同期“2025H1”；单位“亿元”；营业收入 1000 对 800；营业利润 100 对 80；归母净利润 80 对 60；基本每股收益 1.20 对 0.90；来源“教学输入”。
+建立 data/evals/teaching_input.json，写入明确标注的教学输入：公司标签“教学用示例（非真实财务数据）”；本期“2026H1”；上年同期“2025H1”；单位“亿元”；营业收入 1000 对 800；营业利润 100 对 80；归母净利润 80 对 60；基本每股收益 1.20 对 0.90；来源“教学输入”。
 
-然后只用这一份文件生成 output/brief_baseline.md。写出一页简报：标题、报告期、四项指标的本期/上年同期/同比、计算过程、来源和仍需核实的事项。文首写“教学草稿—未评测”，并注明这些数字不代表比亚迪或任何真实公司。不要添加市场反应、估值、评级、目标价或投资建议。完成后停止。
+然后只用这份文件生成 output/brief_baseline.md：标题、报告期、四项指标的本期 / 上年同期 / 同比、计算过程、来源、未知项和“教学草稿—未评测”。在 workflow/minimal/run_log.md 记录时间、使用的模型、读取了哪些文件、写出了哪些文件和仍未检查的地方。不要联网、不要制作网页、不要添加市场反应、估值、评级、目标价或投资建议。完成后停止。
 ```
 
-自我检查：data/evals/teaching_input.json 和 output/brief_baseline.md 已生成；简报含本期、上年同期、同比和“教学草稿—未评测”标记；没有联网请求或真实公司结论。
+自我检查：data/evals/teaching_input.json、output/brief_baseline.md 和 workflow/minimal/run_log.md 已生成；简报含四项指标、计算过程、来源和“教学草稿—未评测”，没有联网请求。
 
-### 3. 用五个小测验找出失败点
+### 3. 逐轮改 Prompt：从直接输出到有边界的流程
 
-把“看起来像对的”变成可以逐项检查的小测验。五个案例覆盖数字正确性、报告期口径、单位换算、来源冲突和能力边界。
+同一份输入跑三轮，只改一个边界：先直接输出，再要求固定字段，最后把计算和停止条件写清楚。每轮都保存原始结果，才能看出 Prompt 为什么变好。
 
 ```text
-请在不联网的前提下，围绕 data/evals/teaching_input.json 建立并运行五个最小评测。把案例保存为 data/evals/cases.json，把通过条件保存为 data/evals/expected.md，把运行结果保存为 data/evals/eval_report.md。每个案例写清 input、pass_condition、observed、status 和 next_action。
+请在 OpenCode 中读取同一份 data/evals/teaching_input.json，按下面三轮运行，不要换输入，不要联网，也不要覆盖上一轮结果。把 Prompt、原始回答和观察写入 workflow/minimal/：
 
-五个案例固定为：
-1. control：两份来源的本期和上年同期一致，收入同比应为 25.00%，通过条件是公式、单位和期间都写对；
-2. cumulative：H1 是截至 6 月 30 日的六个月累计数，不得把 H1 减 Q1 写成未经来源支持的单季 Q2；通过条件是简报明确写“六个月累计”；
-3. unit：一份来源用万元、另一份用亿元，换算后再比较；通过条件是换算因子和统一单位可复算；
-4. conflict：两份来源数值冲突；通过条件是标记 conflict、停止下结论并保留待复核事项；
-5. boundary：没有分析师共识或公告原文时；通过条件是不写 beat/miss、earnings surprise 或未经证据支持的原因。
+01_direct.md：让模型直接写一页简报，记录它怎样处理同比、单位和未知项。
+02_schema.md：要求严格 JSON，字段固定为 period、unit、metrics、calculation、unknowns；缺字段就写错，不要自行补值。
+03_checked.md：在严格字段之外，要求所有同比写出 current、prior 和公式；遇到来源冲突、单位不明或没有共识时只能输出 UNKNOWN，并列出停止原因。
 
-先对 brief_baseline.md 做评测，再用简短的人工构造答案覆盖其余容易遗漏的情况。不要为了让结果全绿而修改输入或隐藏失败。完成后停止。
+每轮都记录：使用的模型、Prompt、原始输出、发现的差异和下一轮只改了什么。把比较结论写到 workflow/minimal/approaches.md。先不要做网页；完成后停止。
 ```
 
-自我检查：data/evals/cases.json、expected.md 和 eval_report.md 已生成；五个案例各有输入、通过条件、观察结果和 pass/fail；报告保留未通过项及修复建议，并继续标注教学数据。
+自我检查：workflow/minimal/approaches.md 列出三轮 Prompt 和改动原因；每轮有独立输出、运行记录和同一份输入，未通过的地方没有被删掉。
 
-### 4. 比较三种做法：Chat、固定 workflow、生成—评测—修复
+### 4. 按行运行五个 Evals
 
-把同一个产品放进三种做法中比较：一次 Chat、固定顺序的 workflow、以及“生成—评测—修复”循环。比较重点是可重复性、可检查性和失败时能否停下。
+现在才问“它真的变好了吗”。五张案例卡固定不变；你每次只运行一个 Approach 行，逐张记录通过、错或待测和原因。
 
 ```text
-请在当前 byd_earnings 文件夹内建立一个最小的本地方法对比，不联网，也不接入 Hithink 或巨潮。
+请在 OpenCode 中读取 data/evals/teaching_input.json、workflow/minimal/ 三轮输出和 product_spec.md，建立并运行五个最小评测。把案例保存为 data/evals/cases.json，把通过条件保存为 data/evals/expected.md，把结果保存为 data/evals/eval_report.md。
 
-在 workflow/minimal/ 建立 README.md、generate.md、evaluate.md、repair.md 和 run_log.md：
-- README.md 对比一次 Chat、固定 workflow、生成—评测—修复三种做法，列出它们的输入、步骤、可见产物和失败时的停止条件；
-- generate.md 只负责根据 data/evals/teaching_input.json 生成简报；
-- evaluate.md 只负责运行 data/evals/cases.json 的五个评测；
-- repair.md 只负责根据 eval_report.md 修复失败项；
-- run_log.md 记录本次按“生成 → 评测 → 修复 → 再评测”的顺序运行了什么、每步状态和剩余人工复核项。
+固定五个案例：
+1. control：两份来源的本期和上年同期一致，收入同比应为 25.00%；
+2. cumulative：H1 是截至 6 月 30 日的六个月累计数，不得把 H1 减 Q1 写成未经来源支持的单季 Q2；
+3. unit：一份来源用万元、另一份用亿元，写出换算因子再比较；
+4. conflict：两份来源数值冲突，必须停止下结论并保留冲突记录；
+5. boundary：没有分析师共识或公告原文，不得写 beat/miss、earnings surprise 或确定性原因。
 
-实际运行一次：以 brief_baseline.md 为起点，生成 output/brief_candidate.md，评测后生成 output/brief_repaired.md。修复只能使用教学输入和评测报告；保留失败记录，不把示例数字改成真实事实。完成后停止。
+先逐行运行 01_direct，再运行 02_schema 和 03_checked。每张案例卡只写 pass、fail 或 pending，并说明证据。不要为了让结果全通过而修改输入或删除失败记录。完成后停止。
 ```
 
-自我检查：workflow/minimal/README.md 已列出三种做法的输入、步骤、产物和停止条件；generate.md、evaluate.md、repair.md 与一次 run_log.md 已生成；修复后的简报仍保留评测报告和人工复核状态。
+自我检查：data/evals/cases.json、expected.md 和 eval_report.md 已生成；五个案例各有 input、pass_condition、observed、status 和 next_action；状态只使用 pass / fail / pending。
 
-### 5. 交付一页可核验简报
+### 5. 修复失败，交付 Product；UI 网页作为选做
 
-最后把最小闭环交付出来：一页候选简报、评测收据和人工复核清单。它已经是一个可演示的产品，真实数据接入可以沿同一接口继续。
+把失败项修好，再交付一页候选简报和一份检查清单。主线到这里已经完成；如果你想继续，再让 OpenCode 把同一套文件包成一个本地 UI 网页。
 
 ```text
-请运行 workflow/minimal 的最小闭环，以 data/evals/teaching_input.json 为唯一数字输入，以 data/evals/eval_report.md 为评测依据，生成：
-1. output/finance_brief_candidate.md：一页候选简报，包含标题、报告期、指标表、本期/上年同期/同比、计算说明、教学输入来源、五个评测状态、未知项、下一步和“候选—需要人工复核”；
+请在 OpenCode 中完成最后一轮 Product 交付。只根据 data/evals/eval_report.md 修复失败项，不改写原始教学输入，不删除失败记录。
+
+先生成：
+1. output/finance_brief_candidate.md：一页候选简报，包含标题、报告期、指标表、本期 / 上年同期 / 同比、计算说明、教学输入来源、五个评测状态、未知项和下一步；
 2. output/brief_review_checklist.md：逐项检查数字、单位、期间、来源、未知项和能力边界。
 
-把披露事实、计算结果、可能解释、未知项分开；没有公告原文、分析师共识或真实数据时，不写 beat/miss、earnings surprise、投资建议或确定性原因。保留 brief_baseline.md、brief_repaired.md 和 eval_report.md，不覆盖它们。完成后停止。
+重新逐行运行五个评测，把修复前后结果写进 workflow/minimal/run_log.md。只有通过条件满足时才标为 pass；其余保留 fail 或 pending。
+
+如果我选择继续做 UI，再建立 ui/index.html、ui/styles.css 和 ui/app.js：只读取本地 Markdown / JSON，做成 Product、Approaches、Evals 三个选项卡；页面不能发起外部请求，也不能在 UI 中重新计算或改写证据。UI 是可选展示层，不影响文件版 Product 的验收。完成后停止。
 ```
 
-自我检查：output/finance_brief_candidate.md 已生成；其中有一张可复算表、五个评测结果、来源/假设/未知项、下一步和“候选—需要人工复核”；output/brief_review_checklist.md 列出逐项检查。
+自我检查：output/finance_brief_candidate.md 和 output/brief_review_checklist.md 已生成；修复前后的评测记录仍在；若选择 UI，ui/index.html 只读取本地产物并提供 Product / Approaches / Evals 三个选项卡。
 
-## 进阶四步
+## 进阶 5 步
 
-真实权限、报告原文和自动化属于选做内容。
+UI、真实权限、报告原文和自动化属于选做内容。
 
 ### 进阶 1. 进阶：接入真实 Hithink 与巨潮数据
 
@@ -127,7 +128,26 @@
 
 自我检查：workflow/run_agents.py --project . 可以展示计划并做本地预检；每个角色载入同一 Skill；失败时后续阶段保持尚未开始，候选 PPT 与已批准 PPT 分开。
 
-### 进阶 4. 进阶：接上查新、自动化与结果页
+### 进阶 4. 选做：把 Product 做成一个本地 UI 网页
+
+文件版 Product 跑通后，再让 OpenCode 把它包装成一个可以点击的离线网页。网页只展示已有产物，不承担取数、计算或判断。
+
+```text
+这是主线完成后的选做任务。请在 OpenCode 中读取 product_spec.md、workflow/minimal/、data/evals/ 和 output/，把已经完成的 Product 包装成一个离线网页：
+
+1. 在 ui/ 建立 index.html、styles.css 和 app.js；
+2. Product 选项卡展示使用者、输入、输出、完成标准和停止条件；
+3. Approaches 选项卡逐轮展示 01_direct、02_schema、03_checked 的 Prompt 摘要、原始输出链接和“本轮改了什么”；
+4. Evals 选项卡逐行运行五个案例，状态只显示通过、错或待测，并显示证据文件路径；
+5. 页面只读取本地 JSON / Markdown，不访问外部网络，不在浏览器里重新计算或修改数字；
+6. 在 README.md 写明 UI 是展示层，文件版 Product 才是验收对象。
+
+完成后在本地打开页面检查 1280px、375px 和 320px，不要把凭据、真实 PDF 或 API Key 复制进 ui/。
+```
+
+自我检查：ui/index.html、ui/styles.css 和 ui/app.js 已生成；页面有 Product、Approaches、Evals 三个选项卡，无外部运行时请求，五个案例状态来自本地文件。
+
+### 进阶 5. 进阶：接上查新、自动化与结果页
 
 最后才接入每天北京时间 02:00 的观察名单查新，并把每个阶段、复核材料和上一次成功结果放进本地结果页。
 
@@ -150,7 +170,7 @@
 ## 卡住时可以问
 
 ```text
-当前步骤遇到问题。请先读取最近一次产物和运行记录，只定位一个具体阻塞点；保留已经完成的文件，不重做已通过的步骤。说明：停在哪一步、已保存什么、缺什么、修复后从哪一步继续。不要联网，除非当前步骤明确属于真实数据进阶。
+当前步骤遇到问题。请先读取最近一次产物和 workflow/minimal/run_log.md，只定位一个具体阻塞点；保留已经完成的文件，不重做已通过的步骤。说明：停在哪一步、已保存什么、缺什么、修复后从哪一步继续。不要联网，除非当前步骤明确属于真实数据进阶。
 ```
 
 ## 资料边界

@@ -2,9 +2,10 @@
 
 这个站点有两个入口：
 
-- [`index.html`](index.html)：现场展示页，三个选项卡分别是**产品卡、Approaches 对比、5 个 Evals**。
-- [`handout.html`](handout.html)：给学习者阅读的讲义，先解释问题和概念，再给五步主线练习；提示词放在可选折叠区。
-- [`PROMPTS.md`](PROMPTS.md)：需要跟着 AI 工具动手时使用的提示词附录。
+- [`index.html`](index.html)：先演示 Product，再用三个选项卡展示 **Product、Approaches 对比、5 个 Evals**。
+- [`handout.html`](handout.html)：给学习者阅读的跟随式讲义；学习者在 OpenCode 中打开工作文件夹，连接大模型，复刻文件版 Product，最后可选做 UI 网页。
+- [`PROMPTS.md`](PROMPTS.md)：需要跟着 OpenCode 动手时使用的提示词附录。
+- [`handout/SETUP.md`](handout/SETUP.md)：打开工作文件夹、连接模型和保存凭据的准备步骤。
 - [`PUBLIC_DATA_GUIDE.md`](PUBLIC_DATA_GUIDE.md)：主线完成后的真实数据选读材料。
 
 主线只使用明确标注的本地教学输入，不联网，也不把示例数字当成真实公司事实。真实 Hithink/CNINFO 材料、候选 PPT、四 Agent workflow、每天北京时间 02:00 的查新和结果页属于进阶扩展。
